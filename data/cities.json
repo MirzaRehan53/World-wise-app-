@@ -1,0 +1,52 @@
+{
+  "cities": [
+    {
+      "id": "09ee",
+      "cityName": "Fresno-Alhandiga",
+      "country": "Spain",
+      "emoji": "🇪🇸",
+      "date": "2024-11-27T18:40:01.992Z",
+      "notes": "A new City",
+      "position": {
+        "lat": "40.697299008636755",
+        "lng": "-5.603027343750001"
+      }
+    },
+    {
+      "id": "9c6a",
+      "cityName": "Bahawalpur",
+      "country": "Pakistan",
+      "emoji": "🇵🇰",
+      "date": "2024-11-27T18:48:44.454Z",
+      "notes": "Bahawalpur City",
+      "position": {
+        "lat": "29.430029404571762",
+        "lng": "71.59790039062501"
+      }
+    },
+    {
+      "id": "7eaa",
+      "cityName": "Bahawalpur",
+      "country": "Pakistan",
+      "emoji": "🇵🇰",
+      "date": "2024-11-28T19:41:04.220Z",
+      "notes": "",
+      "position": {
+        "lat": "29.40012308842907",
+        "lng": "71.66244506835939"
+      }
+    },
+    {
+      "id": "cdfd",
+      "cityName": "Bahawalpur",
+      "country": "Pakistan",
+      "emoji": "🇵🇰",
+      "date": "2025-03-23T15:45:05.636Z",
+      "notes": "",
+      "position": {
+        "lat": "29.429805139961065",
+        "lng": "71.59986414363841"
+      }
+    }
+  ]
+}
