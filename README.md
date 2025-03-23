@@ -34,5 +34,5 @@ Follow these steps to set up and run the project locally.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/MirzaRehan53/world-wise-app.git
+   git clone https://github.com/MirzaRehan53/World-wise-app-
    cd world-wise-app
