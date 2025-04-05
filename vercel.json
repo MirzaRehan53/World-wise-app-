@@ -1,8 +1,19 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "*.js",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/api/cities", "dest": "/api/cities/index.js" },
-    { "src": "/api/cities/(.*)", "dest": "/api/cities/[id].js" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
   ]
 }

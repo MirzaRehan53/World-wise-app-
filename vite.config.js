@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "http://localhost:9000",
+        target: "https://world-wise-rho-liard.vercel.app/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
