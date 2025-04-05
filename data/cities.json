@@ -1,18 +1,6 @@
 {
   "cities": [
     {
-      "id": "09ee",
-      "cityName": "Fresno-Alhandiga",
-      "country": "Spain",
-      "emoji": "🇪🇸",
-      "date": "2024-11-27T18:40:01.992Z",
-      "notes": "A new City",
-      "position": {
-        "lat": "40.697299008636755",
-        "lng": "-5.603027343750001"
-      }
-    },
-    {
       "id": "9c6a",
       "cityName": "Bahawalpur",
       "country": "Pakistan",

@@ -1,4 +1,9 @@
 {
   "extends": "react-app",
-  "rules": {}
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "no-undef": "error"
+  }
 }
