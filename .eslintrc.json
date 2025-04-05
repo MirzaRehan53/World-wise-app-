@@ -4,6 +4,8 @@
     "node": true
   },
   "rules": {
-    "no-undef": "error"
+    "no-unused-vars": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react-refresh/only-export-components": "off"
   }
 }

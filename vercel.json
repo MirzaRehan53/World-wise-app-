@@ -1,29 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["data/cities.json", "node_modules/**"]
-      }
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "dist/index.html"
-    }
+    { "handle": "filesystem" },
+    { "src": "/api/cities", "dest": "/api/cities/index.js" },
+    { "src": "/api/cities/(.*)", "dest": "/api/cities/[id].js" }
   ]
 }

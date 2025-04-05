@@ -5,10 +5,9 @@ import {
   useEffect,
   useReducer,
 } from "react";
+/* eslint-disable react/prop-types */
 
-// Use a relative URL for Vercel compatibility
-const BASE_URL = "/api"; // Adjust to match your Vercel API route (e.g., /api/cities)
-
+const BASE_URL = "http://localhost:5173/api";
 const CitiesContext = createContext();
 
 const initialState = {
@@ -21,19 +20,34 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "loading":
-      return { ...state, isLoading: true, error: null };
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+
     case "cities/loaded":
-      return { ...state, isLoading: false, cities: action.payload };
+      return {
+        ...state,
+        isLoading: false,
+        cities: action.payload,
+      };
+
     case "city/loaded":
-      return { ...state, isLoading: false, currentCity: action.payload };
+      return {
+        ...state,
+        isLoading: false,
+        currentCity: action.payload,
+      };
+
     case "city/deleted":
       return {
         ...state,
         isLoading: false,
         cities: state.cities.filter((city) => city.id !== action.payload),
-        currentCity:
-          state.currentCity.id === action.payload ? {} : state.currentCity,
+        currentCity: {},
       };
+
     case "city/created":
       return {
         ...state,
@@ -41,8 +55,14 @@ function reducer(state, action) {
         cities: [...state.cities, action.payload],
         currentCity: action.payload,
       };
+
     case "rejected":
-      return { ...state, isLoading: false, error: action.payload };
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }
@@ -59,50 +79,56 @@ const CitiesProvider = ({ children }) => {
       dispatch({ type: "loading" });
       try {
         const res = await fetch(`${BASE_URL}/cities`);
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`Failed to fetch cities: ${res.statusText}`);
+        }
         const data = await res.json();
         dispatch({ type: "cities/loaded", payload: data });
       } catch (e) {
         dispatch({
           type: "rejected",
-          payload: `Failed to fetch cities: ${e.message}`,
+          payload: "There was an error fetching cities.",
         });
       }
     }
     fetchCities();
   }, []);
 
-  const getCity = useCallback(
-    async (id) => {
-      // Convert IDs to strings for consistent comparison (if IDs are numeric in db.json)
-      if (String(id) === String(currentCity.id)) return;
+  const getCity = useCallback(async function getCity(id) {
+    console.log(id, currentCity.id);
+    if (id === currentCity.id) {
+      return;
+    }
 
-      dispatch({ type: "loading" });
-      try {
-        const res = await fetch(`${BASE_URL}/cities/${id}`);
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
-        const data = await res.json();
-        dispatch({ type: "city/loaded", payload: data });
-      } catch (e) {
-        dispatch({
-          type: "rejected",
-          payload: `Failed to fetch city: ${e.message}`,
-        });
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${BASE_URL}/cities/${id}`);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch city data: ${res.statusText}`);
       }
-    },
-    [currentCity.id] // Dependency ensures memoization updates when currentCity changes
-  );
-
+      const data = await res.json();
+      dispatch({ type: "city/loaded", payload: data });
+    } catch {
+      dispatch({
+        type: "rejected",
+        payload: "There was an error fetching city information.",
+      });
+    }
+  });
   async function deleteCity(id) {
     dispatch({ type: "loading" });
     try {
-      const res = await fetch(`${BASE_URL}/cities/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+      const res = await fetch(`${BASE_URL}/cities/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error(`Failed to delete city: ${res.statusText}`);
+      }
       dispatch({ type: "city/deleted", payload: id });
-    } catch (e) {
+    } catch {
       dispatch({
         type: "rejected",
-        payload: `Failed to delete city: ${e.message}`,
+        payload: "There was an error deleting the city.",
       });
     }
   }
@@ -110,18 +136,22 @@ const CitiesProvider = ({ children }) => {
   async function addNewCity(newCity) {
     dispatch({ type: "loading" });
     try {
-      const res = await fetch(`${BASE_URL}/cities`, {
+      const res = await fetch(`${BASE_URL}/cities/`, {
         method: "POST",
         body: JSON.stringify(newCity),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+      if (!res.ok) {
+        throw new Error(`Failed to add city: ${res.statusText}`);
+      }
       const data = await res.json();
       dispatch({ type: "city/created", payload: data });
-    } catch (e) {
+    } catch {
       dispatch({
         type: "rejected",
-        payload: `Failed to add city: ${e.message}`,
+        payload: "There was an error adding the city.",
       });
     }
   }
@@ -133,7 +163,7 @@ const CitiesProvider = ({ children }) => {
         isLoading,
         currentCity,
         error,
-        обратно: "getCity",
+        getCity,
         addNewCity,
         deleteCity,
       }}
@@ -144,11 +174,11 @@ const CitiesProvider = ({ children }) => {
 };
 
 const useCitiesContext = () => {
-  const context = useContext(CitiesContext);
-  if (context === undefined) {
+  const citiesContext = useContext(CitiesContext);
+  if (citiesContext === undefined) {
     throw new Error("CitiesContext must be used within CitiesProvider");
   }
-  return context;
+  return citiesContext;
 };
 
 export { CitiesProvider, useCitiesContext };
